@@ -176,4 +176,4 @@ cd d:\codemasterr\backend; python -c "from app.db.database import SessionLocal; 
 1. python create_admin.py
 2. python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8001
 
-3. 
+3. testing 
