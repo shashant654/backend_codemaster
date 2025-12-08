@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
+from typing import Any
 from app.db.database import get_db
 from app.models.models import Review, Course, User
 from app.schemas.schemas import ReviewCreate, ReviewUpdate, ReviewResponse
@@ -12,7 +13,7 @@ router = APIRouter(prefix="/reviews", tags=["reviews"])
 def create_review(
     review_data: ReviewCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: Any = Depends(get_current_user),
 ):
     """Create a new review for a course"""
     # Verify course exists
@@ -69,7 +70,7 @@ def update_review(
     review_id: str,
     review_data: ReviewUpdate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: Any = Depends(get_current_user),
 ):
     """Update a review (only by the review author)"""
     review = db.query(Review).filter(Review.id == review_id).first()
@@ -93,7 +94,7 @@ def update_review(
 def delete_review(
     review_id: str,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: Any = Depends(get_current_user),
 ):
     """Delete a review (only by the review author)"""
     review = db.query(Review).filter(Review.id == review_id).first()

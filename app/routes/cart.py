@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Any
 from app.db.database import get_db
 from app.models.models import User, CartItem, Course
 from app.schemas.schemas import CartItemResponse, CartItemBase
@@ -10,7 +10,7 @@ router = APIRouter(prefix="/cart", tags=["cart"])
 
 @router.get("/", response_model=List[CartItemResponse])
 def get_cart(
-    current_user: User = Depends(get_current_user),
+    current_user: Any = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Get current user's cart items"""
@@ -20,7 +20,7 @@ def get_cart(
 @router.post("/add", response_model=CartItemResponse)
 def add_to_cart(
     cart_item: CartItemBase,
-    current_user: User = Depends(get_current_user),
+    current_user: Any = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Add course to cart"""
@@ -48,7 +48,7 @@ def add_to_cart(
 @router.delete("/{cart_item_id}")
 def remove_from_cart(
     cart_item_id: int,
-    current_user: User = Depends(get_current_user),
+    current_user: Any = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Remove item from cart"""
@@ -66,7 +66,7 @@ def remove_from_cart(
 
 @router.delete("/")
 def clear_cart(
-    current_user: User = Depends(get_current_user),
+    current_user: Any = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Clear all items from cart"""
@@ -76,7 +76,7 @@ def clear_cart(
 
 @router.get("/count")
 def get_cart_count(
-    current_user: User = Depends(get_current_user),
+    current_user: Any = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Get count of items in cart"""

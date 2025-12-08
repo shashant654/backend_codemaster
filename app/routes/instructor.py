@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
+from typing import Any
 from app.db.database import get_db
 from app.models.models import Course, Section, Lecture, User
 from app.schemas.schemas import CourseCreate, CourseUpdate, CourseResponse, SectionResponse, LectureResponse
@@ -9,7 +10,7 @@ from datetime import datetime
 router = APIRouter(prefix="/instructor", tags=["instructor"])
 
 
-def check_is_instructor(current_user: User) -> User:
+def check_is_instructor(current_user: Any) -> Any:
     """Verify that current user is an instructor"""
     if not current_user.is_instructor:
         raise HTTPException(status_code=403, detail="Only instructors can create courses")
@@ -20,7 +21,7 @@ def check_is_instructor(current_user: User) -> User:
 def create_course(
     course_data: CourseCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: Any = Depends(get_current_user),
 ):
     """Create a new course"""
     check_is_instructor(current_user)
@@ -43,7 +44,7 @@ def create_course(
 @router.get("/courses", response_model=list[CourseResponse])
 def get_instructor_courses(
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: Any = Depends(get_current_user),
 ):
     """Get all courses created by the current instructor"""
     check_is_instructor(current_user)
@@ -58,7 +59,7 @@ def get_instructor_courses(
 def get_instructor_course(
     course_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: Any = Depends(get_current_user),
 ):
     """Get a specific course created by the current instructor"""
     check_is_instructor(current_user)
@@ -77,7 +78,7 @@ def update_course(
     course_id: int,
     course_data: CourseUpdate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: Any = Depends(get_current_user),
 ):
     """Update a course (only by the course instructor)"""
     check_is_instructor(current_user)
@@ -104,7 +105,7 @@ def update_course(
 def delete_course(
     course_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: Any = Depends(get_current_user),
 ):
     """Delete a course (only by the course instructor)"""
     check_is_instructor(current_user)
@@ -126,7 +127,7 @@ def create_section(
     course_id: int,
     section_data: dict,  # title, description, order
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: Any = Depends(get_current_user),
 ):
     """Create a new section for a course"""
     check_is_instructor(current_user)
@@ -155,7 +156,7 @@ def delete_section(
     course_id: int,
     section_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: Any = Depends(get_current_user),
 ):
     """Delete a section from a course"""
     check_is_instructor(current_user)
@@ -185,7 +186,7 @@ def create_lecture(
     section_id: int,
     lecture_data: dict,  # title, description, video_url, duration, order, is_preview
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: Any = Depends(get_current_user),
 ):
     """Create a new lecture in a section"""
     check_is_instructor(current_user)
@@ -225,7 +226,7 @@ def delete_lecture(
     section_id: int,
     lecture_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: Any = Depends(get_current_user),
 ):
     """Delete a lecture from a section"""
     check_is_instructor(current_user)

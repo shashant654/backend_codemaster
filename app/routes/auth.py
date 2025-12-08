@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from datetime import timedelta
+from typing import Any
 from app.db.database import get_db
 from app.models.models import User
 from app.schemas.schemas import UserCreate, UserResponse, UserLogin, TokenResponse
@@ -79,17 +80,17 @@ def login(credentials: UserLogin, db: Session = Depends(get_db)):
     }
 
 @router.get("/me", response_model=UserResponse)
-def get_current_user_profile(current_user: User = Depends(get_current_user)):
+def get_current_user_profile(current_user: Any = Depends(get_current_user)):
     """Get current authenticated user profile"""
     return current_user
 
 @router.post("/logout")
-def logout(current_user: User = Depends(get_current_user)):
+def logout(current_user: Any = Depends(get_current_user)):
     """Logout current user (client should remove token)"""
     return {"message": "Successfully logged out"}
 
 @router.post("/refresh", response_model=TokenResponse)
-def refresh_token(current_user: User = Depends(get_current_user)):
+def refresh_token(current_user: Any = Depends(get_current_user)):
     """Refresh access token"""
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(

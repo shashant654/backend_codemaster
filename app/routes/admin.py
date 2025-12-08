@@ -6,7 +6,7 @@ from app.core.security import get_current_admin, verify_password, create_access_
 from app.core.config import settings
 from app.schemas.schemas import UserLogin, TokenResponse
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Any
 from datetime import datetime, timedelta
 import shutil
 import os
@@ -65,7 +65,7 @@ def admin_login(credentials: UserLogin, db: Session = Depends(get_db)):
 @router.get("/users", response_model=List[UserResponse])
 def get_all_users(
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_admin)
+    current_user: Any = Depends(get_current_admin)
 ):
     """Get all users (Admin only)"""
     users = db.query(User).all()
@@ -74,7 +74,7 @@ def get_all_users(
 @router.get("/stats", response_model=DashboardStats)
 def get_dashboard_stats(
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_admin)
+    current_user: Any = Depends(get_current_admin)
 ):
     """Get system status (Admin only)"""
     total_users = db.query(User).count()
@@ -98,7 +98,7 @@ class OrderVerification(BaseModel):
 @router.get("/orders")
 def get_all_orders(
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_admin)
+    current_user: Any = Depends(get_current_admin)
 ):
     """Get all orders with user details (Admin only)"""
     # Join with User to get user details efficiently if needed, or rely on lazy loading if configured
@@ -112,7 +112,7 @@ def verify_order(
     order_id: int,
     verification: OrderVerification,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_admin)
+    current_user: Any = Depends(get_current_admin)
 ):
     """Verify manual payment order"""
     order = db.query(Order).filter(Order.id == order_id).first()
@@ -176,7 +176,7 @@ def admin_update_course(
     thumbnail: Optional[UploadFile] = File(None),
     preview_video: Optional[UploadFile] = File(None),
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_admin)
+    current_user: Any = Depends(get_current_admin)
 ):
     """Update a course (Admin only - no instructor restriction)"""
     course = db.query(Course).filter(Course.id == course_id).first()
@@ -234,7 +234,7 @@ def admin_update_course(
 def admin_delete_course(
     course_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_admin)
+    current_user: Any = Depends(get_current_admin)
 ):
     """Delete a course (Admin only - no instructor restriction)"""
     course = db.query(Course).filter(Course.id == course_id).first()
@@ -285,7 +285,7 @@ class DailyClassResponse(BaseModel):
 def create_daily_class(
     daily_class: DailyClassCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_admin)
+    current_user: Any = Depends(get_current_admin)
 ):
     """Create a new daily class (Admin only)"""
     course = db.query(Course).filter(Course.id == daily_class.course_id).first()
@@ -314,7 +314,7 @@ def create_daily_class(
 def get_all_daily_classes(
     course_id: Optional[int] = None,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_admin)
+    current_user: Any = Depends(get_current_admin)
 ):
     """Get all daily classes (Admin only)"""
     query = db.query(DailyClass)
@@ -336,7 +336,7 @@ def get_all_daily_classes(
 def get_daily_class(
     daily_class_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_admin)
+    current_user: Any = Depends(get_current_admin)
 ):
     """Get a specific daily class (Admin only)"""
     daily_class = db.query(DailyClass).filter(DailyClass.id == daily_class_id).first()
@@ -354,7 +354,7 @@ def update_daily_class(
     daily_class_id: int,
     update_data: DailyClassUpdate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_admin)
+    current_user: Any = Depends(get_current_admin)
 ):
     """Update a daily class (Admin only)"""
     daily_class = db.query(DailyClass).filter(DailyClass.id == daily_class_id).first()
@@ -379,7 +379,7 @@ def update_daily_class(
 def delete_daily_class(
     daily_class_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_admin)
+    current_user: Any = Depends(get_current_admin)
 ):
     """Delete a daily class (Admin only)"""
     daily_class = db.query(DailyClass).filter(DailyClass.id == daily_class_id).first()

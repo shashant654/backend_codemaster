@@ -12,7 +12,7 @@ from app.models.models import User, CartItem, Order, OrderItem, Course
 from app.core.security import get_current_user, get_current_admin
 from app.core.email import send_payment_notification
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, Any
 
 router = APIRouter(prefix="/payments", tags=["payments"])
 
@@ -33,7 +33,7 @@ class UpiCreate(BaseModel):
 def create_or_update_upi(
     upi_data: UpiCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_admin)
+    current_user: Any = Depends(get_current_admin)
 ):
     """Create or update the custom UPI payment method"""
     from app.models.models import PaymentMethod
@@ -108,7 +108,7 @@ def get_payment_methods(db: Session = Depends(get_db)):
 @router.post("/create-order")
 def create_payment_order(
     order_data: PaymentOrderCreate,
-    current_user: User = Depends(get_current_user)
+    current_user: Any = Depends(get_current_user)
 ):
     try:
         data = {
@@ -126,7 +126,7 @@ def create_payment_order(
 def verify_payment(
     payment_data: PaymentVerify,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: Any = Depends(get_current_user)
 ):
     try:
         # Verify signature
@@ -195,7 +195,7 @@ async def create_manual_payment(
     utr: str = Form(...),
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: Any = Depends(get_current_user)
 ):
     try:
         # Re-fetch user to attach to session for lazy loading

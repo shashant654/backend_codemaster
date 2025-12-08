@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
-from typing import List, Optional
+from typing import List, Optional, Any
 from app.db.database import get_db
 from app.models.models import Order, OrderItem, CartItem, Course, User
 from app.schemas.schemas import OrderCreate, OrderResponse
@@ -14,7 +14,7 @@ def create_order_from_cart(
     payment_method: Optional[str] = "credit_card",
     coupon_code: Optional[str] = None,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: Any = Depends(get_current_user)
 ):
     """Create order from cart items"""
     # Get cart items
@@ -100,7 +100,7 @@ def create_order_from_cart(
 def create_order(
     order_data: OrderCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: Any = Depends(get_current_user)
 ):
     """Create a new order from course IDs"""
     courses_to_order = []
@@ -163,7 +163,7 @@ def list_orders(
     skip: int = Query(0, ge=0),
     limit: int = Query(10, ge=1, le=100),
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: Any = Depends(get_current_user)
 ):
     """Get user's order history"""
     orders = db.query(Order).filter(
@@ -175,7 +175,7 @@ def list_orders(
 def get_order(
     order_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: Any = Depends(get_current_user)
 ):
     """Get a specific order"""
     order = db.query(Order).filter(Order.id == order_id).first()
@@ -193,7 +193,7 @@ def get_order(
 @router.get("/latest/details")
 def get_latest_order(
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: Any = Depends(get_current_user)
 ):
     """Get user's latest order"""
     order = db.query(Order).filter(
@@ -210,7 +210,7 @@ def request_refund(
     order_id: int,
     reason: Optional[str] = None,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: Any = Depends(get_current_user)
 ):
     """Request refund for an order"""
     order = db.query(Order).filter(Order.id == order_id).first()

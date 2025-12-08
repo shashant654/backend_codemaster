@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Any
 from app.db.database import get_db
 from app.models.models import User, Course
 from app.schemas.schemas import CourseWithInstructor
@@ -10,7 +10,7 @@ router = APIRouter(prefix="/wishlist", tags=["wishlist"])
 
 @router.get("/", response_model=List[CourseWithInstructor])
 def get_wishlist(
-    current_user: User = Depends(get_current_user),
+    current_user: Any = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Get current user's wishlist"""
@@ -21,7 +21,7 @@ def get_wishlist(
 @router.post("/add/{course_id}")
 def add_to_wishlist(
     course_id: int,
-    current_user: User = Depends(get_current_user),
+    current_user: Any = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Add course to wishlist"""
@@ -41,7 +41,7 @@ def add_to_wishlist(
 @router.delete("/remove/{course_id}")
 def remove_from_wishlist(
     course_id: int,
-    current_user: User = Depends(get_current_user),
+    current_user: Any = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Remove course from wishlist"""
@@ -61,7 +61,7 @@ def remove_from_wishlist(
 @router.get("/check/{course_id}")
 def check_in_wishlist(
     course_id: int,
-    current_user: User = Depends(get_current_user),
+    current_user: Any = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Check if course is in wishlist"""

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from typing import List, Optional
+from typing import List, Optional, Any
 from pydantic import BaseModel
 from app.db.database import get_db
 from app.models.models import User, Course
@@ -54,7 +54,7 @@ def update_user(user_id: int, user_update: UserUpdate, db: Session = Depends(get
 def update_profile(
     profile_data: ProfileUpdateRequest,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: Any = Depends(get_current_user),
 ):
     """Update current user's profile"""
     user = current_user
@@ -87,7 +87,7 @@ def update_profile(
 def change_password(
     password_data: PasswordChangeRequest,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: Any = Depends(get_current_user),
 ):
     """Change user's password"""
     if password_data.new_password != password_data.confirm_password:

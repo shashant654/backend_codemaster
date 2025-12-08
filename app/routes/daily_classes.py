@@ -11,7 +11,7 @@ router = APIRouter(prefix="/daily-classes", tags=["daily-classes"])
 @router.get("/upcoming")
 def get_upcoming_daily_classes(
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: Any = Depends(get_current_user)
 ):
     """Get upcoming daily classes for all enrolled courses"""
     # Get user's enrolled course IDs
