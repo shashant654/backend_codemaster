@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.db.database import engine, Base
 
+# Version: 1.0.1 - Fixed Python 3.13 type annotation issues
 # Import all routers
 from app.routes import (
     auth,
