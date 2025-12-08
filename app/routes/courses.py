@@ -1,18 +1,16 @@
-from __future__ import annotations
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, File, UploadFile, Form, status
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Any
 from app.db.database import get_db
 from app.models.models import Course, User, DailyClass
 from app.schemas.schemas import CourseResponse, CourseDetailResponse
 from datetime import datetime
-
-router = APIRouter(prefix="/courses", tags=["courses"])
-from fastapi import File, UploadFile, Form, status
 from app.core.security import get_current_admin
 import shutil
 import os
 from pathlib import Path
+
+router = APIRouter(prefix="/courses", tags=["courses"])
 
 @router.post("/", response_model=CourseResponse, status_code=status.HTTP_201_CREATED)
 def create_course(
@@ -27,7 +25,7 @@ def create_course(
     thumbnail: UploadFile = File(...),
     preview_video: UploadFile = File(None),
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_admin)
+    current_user: Any = Depends(get_current_admin)
 ):
     """Create a new course (Admin only)"""
     # 1. Handle File Uploads
