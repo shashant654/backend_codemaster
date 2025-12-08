@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from datetime import datetime
-from typing import List
+from typing import List, Any
 from app.db.database import get_db
 from app.models.models import DailyClass, Course, User
 from app.core.security import get_current_user

@@ -167,3 +167,13 @@ Before deploying to production:
 ## License
 
 MIT
+
+
+## to check is admin created or not
+cd d:\codemasterr\backend; python -c "from app.db.database import SessionLocal; from app.models.models import User; db = SessionLocal(); admins = db.query(User).filter(User.is_admin == True).all(); print('Admins found:', len(admins)); [print(f'{a.id}: {a.email} (admin={a.is_admin})') for a in admins]"
+
+
+1. python create_admin.py
+2. python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8001
+
+3. 
