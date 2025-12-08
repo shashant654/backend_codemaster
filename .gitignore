@@ -152,3 +152,6 @@ debug_*.log
 # Environment specific
 .env.local
 .env.*.local
+
+
+run.sh
