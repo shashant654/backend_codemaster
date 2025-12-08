@@ -10,3 +10,4 @@ python-multipart
 bcrypt
 email-validator
 passlib
+argon2-cffi
