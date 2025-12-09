@@ -1,11 +1,16 @@
+from __future__ import annotations
+
 from datetime import datetime, timedelta
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 import jwt
 from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer
 from app.core.config import settings
+
+if TYPE_CHECKING:
+    from app.models.models import User
 
 # Use argon2 for password hashing
 ph = PasswordHasher()
