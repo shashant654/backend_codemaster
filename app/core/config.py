@@ -23,11 +23,9 @@ class Settings(BaseSettings):
 
     # Email
     EMAIL_HOST: str = "smtp.gmail.com"
-    EMAIL_PORT: int = 465
+    EMAIL_PORT: int = 587
     EMAIL_HOST_USER: str = "shashantshekhar10@gmail.com"
     EMAIL_HOST_PASSWORD: str = "rkwl thar ysvn vzgj"
-    EMAIL_USE_SSL: bool = True
-    EMAIL_USE_TLS: bool = False
     DEFAULT_FROM_EMAIL: str = "Code Learn <shashantshekhar10@gmail.com>"
     
     class Config:
