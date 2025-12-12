@@ -22,11 +22,11 @@ class Settings(BaseSettings):
     RAZORPAY_KEY_SECRET: Optional[str] = None
 
     # Email
-    EMAIL_HOST: str = "smtp.gmail.com"
-    EMAIL_PORT: int = 587
-    EMAIL_HOST_USER: str = "shashantshekhar10@gmail.com"
-    EMAIL_HOST_PASSWORD: str = "rkwl thar ysvn vzgj"
-    DEFAULT_FROM_EMAIL: str = "Code Learn <shashantshekhar10@gmail.com>"
+    EMAIL_HOST: str
+    EMAIL_PORT: int
+    EMAIL_HOST_USER: str
+    EMAIL_HOST_PASSWORD: str
+    DEFAULT_FROM_EMAIL: str
     
     class Config:
         env_file = ".env"

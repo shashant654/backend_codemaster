@@ -16,7 +16,8 @@ from app.routes import (
     instructor,
     payments,
     admin,
-    daily_classes
+    daily_classes,
+    test
 )
 
 # Create tables
@@ -66,6 +67,7 @@ app.include_router(instructor.router, prefix=api_prefix)
 app.include_router(payments.router, prefix=api_prefix)
 app.include_router(admin.router, prefix=api_prefix)
 app.include_router(daily_classes.router, prefix=api_prefix)
+app.include_router(test.router)
 
 @app.get("/")
 def root():
