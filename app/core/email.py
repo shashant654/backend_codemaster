@@ -33,10 +33,10 @@ def send_payment_notification(order_id: int, amount: float, user_email: str, pro
         # Connect to SMTP Server
         if settings.EMAIL_PORT == 465:
             # Use SMTP_SSL for port 465
-            server = smtplib.SMTP_SSL(settings.EMAIL_HOST, settings.EMAIL_PORT)
+            server = smtplib.SMTP_SSL(settings.EMAIL_HOST, settings.EMAIL_PORT, timeout=10)
         else:
             # Use SMTP with STARTTLS for port 587 and others
-            server = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
+            server = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT, timeout=10)
             server.starttls()
         
         server.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
@@ -82,10 +82,10 @@ def send_order_status_email(user_email: str, order_id: int, status: str):
         # Connect to SMTP Server
         if settings.EMAIL_PORT == 465:
             # Use SMTP_SSL for port 465
-            server = smtplib.SMTP_SSL(settings.EMAIL_HOST, settings.EMAIL_PORT)
+            server = smtplib.SMTP_SSL(settings.EMAIL_HOST, settings.EMAIL_PORT, timeout=10)
         else:
             # Use SMTP with STARTTLS for port 587 and others
-            server = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
+            server = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT, timeout=10)
             server.starttls()
         
         server.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)

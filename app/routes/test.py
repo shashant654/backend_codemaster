@@ -50,10 +50,10 @@ async def test_send_email(email_request: EmailTestRequest):
         # Connect to SMTP Server
         if settings.EMAIL_PORT == 465:
             # Use SMTP_SSL for port 465
-            server = smtplib.SMTP_SSL(settings.EMAIL_HOST, settings.EMAIL_PORT)
+            server = smtplib.SMTP_SSL(settings.EMAIL_HOST, settings.EMAIL_PORT, timeout=10)
         else:
             # Use SMTP with STARTTLS for port 587 and others
-            server = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
+            server = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT, timeout=10)
             server.starttls()
         
         server.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
