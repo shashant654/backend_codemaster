@@ -105,8 +105,6 @@ def get_all_orders(
     orders = db.query(Order).order_by(Order.created_at.desc()).all()
     return orders
 
-from app.core.email import send_order_status_email
-
 @router.post("/orders/{order_id}/verify")
 def verify_order(
     order_id: int,
@@ -132,14 +130,9 @@ def verify_order(
             if course and course not in user.enrolled_courses:
                 user.enrolled_courses.append(course)
                 course.enrolled_count += 1
-                
-        # Send Email
-        send_order_status_email(user.email, order.id, "completed")
         
     elif verification.action == "reject":
         order.status = "cancelled"
-        # Send Email
-        send_order_status_email(user.email, order.id, "cancelled")
     else:
         raise HTTPException(status_code=400, detail="Invalid action")
         

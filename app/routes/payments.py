@@ -10,9 +10,14 @@ from app.core.config import settings
 from app.db.database import get_db
 from app.models.models import User, CartItem, Order, OrderItem, Course
 from app.core.security import get_current_user, get_current_admin
-from app.core.email import send_payment_notification
 from pydantic import BaseModel
 from typing import Optional, Any
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+import logging
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/payments", tags=["payments"])
 
@@ -249,17 +254,6 @@ async def create_manual_payment(
             db.delete(item)
             
         db.commit()
-        
-        # 6. Send Email Notification
-        full_proof_url = f"http://localhost:8081{proof_url}" 
-        
-        send_payment_notification(
-            order_id=db_order.id,
-            amount=total_price,
-            user_email=user.email,
-            proof_url=full_proof_url,
-            utr=utr
-        )
         
         return {"status": "success", "message": "Payment submitted for verification", "order_id": db_order.id}
         
